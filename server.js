@@ -9,13 +9,15 @@ http.createServer(function (req, res) {
  //make sure the value of your form method is set to "POST"
  let message = "";
 req.on('data', (data)=>{
-      message += data;
+      message += data ;
    console.log(message);
     });
-    fs.writeFile('message.txt', message , function (err) {
-        if (err) throw err;
-        console.log('Saved!');
+ req.on('end', () =>{
+    fs.appendFile('message.txt', message , function (err) {
+        if (err) throw err;
+        console.log('Saved!');
       });
+     });
     res.writeHead(200, {'Content-Type': 'text/html'});
     res.write(htmlform);
     res.end();
